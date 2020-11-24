@@ -1,11 +1,20 @@
 // Hàm validation
 function Validation(option){
 
+    function getParent(element, selector) {
+        while(element.parentElement) {
+            if(element.parentElement.matches(selector)) {
+                return element.parentElement;
+            }
+            element = element.parentElement;
+        }
+    }
+
     var selectorRule = {};
     // Thực hiện validate
     function validate(inputElement , rule) {
         var errMessage;
-        var errElement = inputElement.parentElement.querySelector('.form-message')
+        var errElement = getParent(inputElement , option.formGroupSelector).querySelector(option.errSelector);
 
         //  Lấy ra các rules của selector
         var rules = selectorRule[rule.selector];
@@ -19,11 +28,11 @@ function Validation(option){
         }
 
         if(errMessage) {
-            inputElement.parentElement.classList.add('invalid');
+            getParent(inputElement , option.formGroupSelector).classList.add('invalid');
             errElement.innerText = errMessage;
         }else {
             errElement.innerText = "";
-            inputElement.parentElement.classList.remove('invalid');
+            getParent(inputElement , option.formGroupSelector).classList.remove('invalid');
         }
         return !errMessage;
     }
@@ -54,7 +63,8 @@ function Validation(option){
                     var enableInputs = formElement.querySelectorAll('[name]:not([disable])');
                     
                     var formValue = Array.from(enableInputs).reduce((values, input)=>{
-                        return (values[input.name] = input.value) && values;
+                        values[input.name] = input.value;
+                        return values;
                     },{});
 
 

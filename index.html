@@ -48,6 +48,8 @@
 
         Validation({
           form: '#form-1',
+          formGroupSelector: '.form-group',
+          errSelector: '.form-message',
           rules: [
             // validate Tên đăng nhập
             Validation.isRequired('#fullname' , 'Mời nhập tên đăng nhập!'),
